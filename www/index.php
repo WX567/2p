@@ -1,4 +1,5 @@
 <?php
+
 $pdo = require $_SERVER['DOCUMENT_ROOT'] . '/db.php';
 $products = $pdo->query("SELECT * FROM products")->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -22,12 +23,14 @@ $products = $pdo->query("SELECT * FROM products")->fetchAll(PDO::FETCH_ASSOC);
                 <th>Цена</th>
                 <th>Артикль</th>
             </tr>
+            <a href="/create.php">Добавить</a>
             <?php foreach ($products as $product): ?>
         <tr>
             <th><?= $product['id'] ?></th>
             <th><?= $product['name'] ?></th>
             <th><?= $product['price'] ?></th>
             <th><?= $product['article'] ?></th>
+            <th><a href="/create_receipts.php">Добавить поставку</a></th>
         </tr>
         <?php endforeach; ?>
         </thead>
