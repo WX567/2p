@@ -1,6 +1,7 @@
 <?php
 $pdo = require $_SERVER['DOCUMENT_ROOT'] . '/db.php';
 $receipts = $pdo->query("SELECT receipts.*, products.name AS name FROM receipts LEFT JOIN products ON receipts.product_id = products.id")->fetchAll(PDO::FETCH_ASSOC);
+$products_count = $pdo->query("SELECT products.name as name, SUM(receipts.quantity) as product_count FROM receipts LEFT JOIN products ON product_id = products.id GROUP BY receipts.product_id")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!doctype html>
 <html lang="en">
@@ -13,6 +14,22 @@ $receipts = $pdo->query("SELECT receipts.*, products.name AS name FROM receipts 
 </head>
 <body>
 <h1>Поступления</h1>
+
+<h2>Общие поступлления</h2>
+
+<table>
+    <tr>
+        <th>Товар</th>
+        <th>Количество</th>
+    </tr>
+    <?php foreach ($products_count as $product_count): ?>
+    <tr>
+        <td><?= $product_count['name'] ?></td>
+        <td><?= $product_count['product_count'] ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+    
 <table>
 <thead>
 <tr>
